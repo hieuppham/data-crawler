@@ -1,19 +1,14 @@
 
 import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import redis.clients.jedis.Jedis;
-
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.*;
-
 import com.google.gson.Gson;
 
 
@@ -56,74 +51,63 @@ public class Test {
         return r;
     }
 
-    public void writeFile(List<String> keys) {
-        String fileName = "C:\\Users\\phamt\\IdeaProjects\\untitled\\locationtest.csv";
-        try (CSVWriter writer = new CSVWriter(new FileWriter(fileName))) {
-            keys.forEach(key -> {
-                writer.writeNext(new String[]{key}, false);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Date stringToDate(String stringDate) {
-        if (stringDate == null) return null;
-
-        String[] arr = stringDate.split(" ");
-        int date = Integer.parseInt(arr[0]);
-        int year = 0;
-        int month = 0;
-        if (arr.length == 4) {
-            year = Integer.parseInt(arr[3]);
-            switch (arr[2]) {
-                case "Một,":
-                    month = 1;
-                    break;
-                case "Hai,":
-                    month = 2;
-                    break;
-                case "Ba,":
-                    month = 3;
-                    break;
-                case "Tư,":
-                case "Bốn,":
-                    month = 4;
-                    break;
-                case "Năm,":
-                    month = 5;
-                    break;
-                case "Sáu,":
-                    month = 6;
-                    break;
-                case "Bảy,":
-                    month = 7;
-                    break;
-                case "Tám,":
-                    month = 8;
-                    break;
-                case "Chín,":
-                    month = 9;
-                    break;
-                case "Mười,":
-                    month = 10;
-                    break;
-                default:
-                    month = 1;
-            }
-        } else if (arr.length == 5) {
-            year = Integer.parseInt(arr[4]);
-            switch (arr[3]) {
-                case "Một,":
-                    month = 11;
-                    break;
-                case "Hai,":
-                    month = 12;
-                    break;
-            }
-        }
-        return new Date(year-1900, month, date);
-    }
+//    private Date stringToDate(String stringDate) {
+//        if (stringDate == null) return null;
+//
+//        String[] arr = stringDate.split(" ");
+//        int date = Integer.parseInt(arr[0]);
+//        int year = 0;
+//        int month = 0;
+//        if (arr.length == 4) {
+//            year = Integer.parseInt(arr[3]);
+//            switch (arr[2]) {
+//                case "Một,":
+//                    month = 1;
+//                    break;
+//                case "Hai,":
+//                    month = 2;
+//                    break;
+//                case "Ba,":
+//                    month = 3;
+//                    break;
+//                case "Tư,":
+//                case "Bốn,":
+//                    month = 4;
+//                    break;
+//                case "Năm,":
+//                    month = 5;
+//                    break;
+//                case "Sáu,":
+//                    month = 6;
+//                    break;
+//                case "Bảy,":
+//                    month = 7;
+//                    break;
+//                case "Tám,":
+//                    month = 8;
+//                    break;
+//                case "Chín,":
+//                    month = 9;
+//                    break;
+//                case "Mười,":
+//                    month = 10;
+//                    break;
+//                default:
+//                    month = 1;
+//            }
+//        } else if (arr.length == 5) {
+//            year = Integer.parseInt(arr[4]);
+//            switch (arr[3]) {
+//                case "Một,":
+//                    month = 11;
+//                    break;
+//                case "Hai,":
+//                    month = 12;
+//                    break;
+//            }
+//        }
+//        return new Date(year-1900, month, date);
+//    }
 
     public void getData(String url, int depth) throws IOException {
         if (!list.contains(url) && depth < MAX_DEPTH && url.indexOf(rootUrl) == 0) {
@@ -221,7 +205,6 @@ public class Test {
     public static void main(String[] args) throws IOException {
         Test test = new Test();
         test.getData(test.rootUrl, 0);
-        test.writeFile(test.newKeys);
     }
 
 }
