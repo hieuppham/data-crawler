@@ -26,7 +26,8 @@ public class Test {
 
     public Test() {
         list = new HashSet<>();
-        jedis = new Jedis("redis://default:1259pjQF8MZ1i8cvcahZXegQifZIN2Hy@redis-19316.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:19316");
+        // jedis = new Jedis("redis://default:1259pjQF8MZ1i8cvcahZXegQifZIN2Hy@redis-19316.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:19316");
+        jedis = new Jedis("redis://127.0.0.1:6379");
         key_date = new HashMap<>();
         score = 0;
         newKeys = new ArrayList<>();
