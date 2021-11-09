@@ -12,30 +12,20 @@ import java.util.*;
 import com.google.gson.Gson;
 
 
-public class Test {
+public class DataCrawler {
     private final int MAX_DEPTH = 7;
     private HashSet<String> list;
     private Jedis jedis;
     final private String rootUrl = "https://reviewdoan.com/";
-    private Map<String, String> key_date;
     private int score;
-
-    private List<String> newKeys;
     private List<String[]> keysAndCoors;
-    private List<String> keys;
 
-    public Test() {
+    public DataCrawler() {
         list = new HashSet<>();
-        // jedis = new Jedis("redis://default:1259pjQF8MZ1i8cvcahZXegQifZIN2Hy@redis-19316.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:19316");
-        jedis = new Jedis("redis://127.0.0.1:6379");
-        key_date = new HashMap<>();
+        jedis = new Jedis("redis://default:1259pjQF8MZ1i8cvcahZXegQifZIN2Hy@redis-19316.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:19316"); 
+        /* jedis = new Jedis("redis://127.0.0.1:6379");*/
         score = 0;
-        newKeys = new ArrayList<>();
         keysAndCoors = this.readFile();
-        keys = new ArrayList<>();
-        keysAndCoors.forEach(keyAndCoors -> {
-            this.keys.add(keyAndCoors[0]);
-        });
     }
 
     // key, lat, lng
@@ -51,64 +41,6 @@ public class Test {
         }
         return r;
     }
-
-//    private Date stringToDate(String stringDate) {
-//        if (stringDate == null) return null;
-//
-//        String[] arr = stringDate.split(" ");
-//        int date = Integer.parseInt(arr[0]);
-//        int year = 0;
-//        int month = 0;
-//        if (arr.length == 4) {
-//            year = Integer.parseInt(arr[3]);
-//            switch (arr[2]) {
-//                case "Một,":
-//                    month = 1;
-//                    break;
-//                case "Hai,":
-//                    month = 2;
-//                    break;
-//                case "Ba,":
-//                    month = 3;
-//                    break;
-//                case "Tư,":
-//                case "Bốn,":
-//                    month = 4;
-//                    break;
-//                case "Năm,":
-//                    month = 5;
-//                    break;
-//                case "Sáu,":
-//                    month = 6;
-//                    break;
-//                case "Bảy,":
-//                    month = 7;
-//                    break;
-//                case "Tám,":
-//                    month = 8;
-//                    break;
-//                case "Chín,":
-//                    month = 9;
-//                    break;
-//                case "Mười,":
-//                    month = 10;
-//                    break;
-//                default:
-//                    month = 1;
-//            }
-//        } else if (arr.length == 5) {
-//            year = Integer.parseInt(arr[4]);
-//            switch (arr[3]) {
-//                case "Một,":
-//                    month = 11;
-//                    break;
-//                case "Hai,":
-//                    month = 12;
-//                    break;
-//            }
-//        }
-//        return new Date(year-1900, month, date);
-//    }
 
     public void getData(String url, int depth) throws IOException {
         if (!list.contains(url) && depth < MAX_DEPTH && url.indexOf(rootUrl) == 0) {
@@ -131,13 +63,6 @@ public class Test {
                 String key = url.substring(url.lastIndexOf("/") + 1, url.indexOf(".html"));
                 post.setKey(key);
 
-                if (!keys.contains(key)) {
-                    newKeys.add(key);
-                }
-
-//                String date = key_date.get(url);
-//                post.setDate(date == null ? null : stringToDate(date.trim()));
-
                 Element header = doc.select("header.entry-header-outer").first();
                 Elements tags = header.select("a.post-cat");
                 ArrayList<String> tagList = new ArrayList<>();
@@ -159,10 +84,6 @@ public class Test {
                 });
 
                 ArrayList<String> textList = new ArrayList<>();
-                Elements texts = main.select("p");
-//                if (texts.size() == 0) texts = main.select("li");
-//                if (texts.size() == 0) texts = main.select("div._2cuy _3dgx _2vxa");
-//                if (texts.size() == 0) texts = main.select("div.ii04i59q");
 
                 if (texts.size() != 0)
                     texts.forEach(element -> {
@@ -202,10 +123,9 @@ public class Test {
         }
     }
 
-
     public static void main(String[] args) throws IOException {
-        Test test = new Test();
-        test.getData(test.rootUrl, 0);
+        DataCrawler DataCrawler = new DataCrawler();
+        DataCrawler.getData(DataCrawler.rootUrl, 0);
     }
 
 }
